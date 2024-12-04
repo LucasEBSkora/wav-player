@@ -5,7 +5,7 @@ This project was done as part of the ``CONCEPTION ET DEVELOPPEMENT D'UN SYSTEME 
 
 ## Language and specs
 
-This project is aimed at implementation on an ulx3s board. It is written in C and the Silice hardware description language. The code in this repository is strongly based on the example in [the Silice introduction project](https://github.com/sylefeb/Silice/tree/master/learn-silice/classroom/soc_wave_player)
+This project is aimed at implementation on an ulx3s board. It is written in C and the Silice hardware description language. The code in this repository is strongly based on the example in [the Silice introduction project](https://github.com/sylefeb/Silice/tree/master/learn-silice/classroom/soc_wave_player), by which I mean that almost all files were copied with little to no alterations.
 
 This project uses submodules. Please clone it with
     git clone --recursive git@github.com:LucasEBSkora/wav-player.git
