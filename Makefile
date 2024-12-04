@@ -16,5 +16,5 @@ endif
 
 clean:
 	make -C firmware clean
-	rm -rf BUILD_*
+	rm -rf build*
 	rm -f *.lpp

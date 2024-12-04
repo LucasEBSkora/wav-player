@@ -4,3 +4,4 @@ compile
 *.elf
 *.o
 build
+firmware/code.s
