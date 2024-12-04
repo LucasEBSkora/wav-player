@@ -4,7 +4,7 @@
 
 // Pre-compilation script, embeds compiled code within a string
 // Code has to be compiled into firmware/code.hex before
-$$dofile('pre_include_compiled.lua')
+$$dofile('../pre_include_compiled.lua')
 
 // Setup memory size
 // - addrW is the address bus width
@@ -15,9 +15,9 @@ $$periph_bit = addrW-1
 // Configure BRAM (needed for write mask)
 $$config['bram_wmask_byte_wenable_width'] = 'data'
 // Includes the processor
-$include('../../../projects/ice-v/CPUs/ice-v.si')
+$include('ice-v.si')
 // Includes the SPIscreen driver
-$include('../../../projects/ice-v/SOCs/ice-v-oled.si')
+$include('ice-v-oled.si')
 
 // Memory interface between SOC and CPU
 group mem_io

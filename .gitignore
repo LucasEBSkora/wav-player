@@ -1,2 +1,6 @@
 .vscode
 compile
+*.hex
+*.elf
+*.o
+build

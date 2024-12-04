@@ -10,7 +10,7 @@ if not path then
   print('********************* compiled code read from ' .. path .. '/firmware/code*.hex')
 end
 
-local in_asm = io.open(findfile('./firmware/code.hex'), 'r')
+local in_asm = io.open(findfile('../firmware/code.hex'), 'r')
 if not in_asm then
   error('please compile code first using the Makefile in ./firmware')
 end
