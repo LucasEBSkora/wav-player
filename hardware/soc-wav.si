@@ -17,6 +17,9 @@ $$config['bram_wmask_byte_wenable_width'] = 'data'
 // Includes the processor
 $include('ice-v.si')
 // Includes the SPIscreen driver
+
+// uncomment the line if there is a problem with the display and the board has a blue circle 
+// $$OLED_SLOW=1 
 $include('ice-v-oled.si')
 
 // Memory interface between SOC and CPU
@@ -32,14 +35,12 @@ group mem_io
 // Audio output unit
 // --------------------------------------------------
 
-unit audio(input  uint8 audio_in,output uint4 audio_out)
+unit audio(input uint8 audio_in, input uint4 high, output uint4 audio_out)
 {
   uint8 counter = 0;
-  uint4 low     = 0;
-  uint4 high    = 15;
   always {
     uint8 frac  = audio_in;
-    audio_out   = counter < frac ? high : low;
+    audio_out   = counter < frac ? high : 0;
     counter     = counter + 1;
   }
 }
@@ -186,6 +187,7 @@ $$end
     uint1 display_reset_access   = prev_mem_addr[ 2,1];
     uint1 sd_access              = prev_mem_addr[ 5,1];
     uint1 button_access          = prev_mem_addr[ 6,1];
+    uint1 pwm_max_access         = prev_mem_addr[ 7,1];
     uint1 framebuffer_access     = prev_mem_addr[$periph_bit-2$,1];
 	  // ---- memory access CPU <-> BRAM (reads and writes)
     // reads  RAM, peripherals => CPU
@@ -206,6 +208,7 @@ $$end
     if (peripheral_w & ~audio_access & ~framebuffer_access) {
       /// LEDs
       leds           = leds_access ? prev_wdata[0,8] : leds;
+      audio.high     = pwm_max_access ? prev_wdata[0,4] : audio.high;
       /// display
       if (display_direct_access) {
         // -> whether to send command or data
