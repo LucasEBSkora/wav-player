@@ -1,6 +1,8 @@
 #ifndef __FIRMWARE_BUTTONS_H__
 #define __FIRMWARE_BUTTONS_H__
 
+#include "config.h"
+
 #define BUTTON_MINUS (1 << 1)
 #define BUTTON_PLUS (1 << 2)
 #define BUTTON_UP (1 << 3)
