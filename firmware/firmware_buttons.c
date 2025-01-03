@@ -1,6 +1,5 @@
 #include "firmware_buttons.h"
 
-
 extern int pwm_audio_high;
 
 void volume_buttons()

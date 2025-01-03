@@ -4,7 +4,7 @@ ARCH = $(shell bash ../tools/bash/riscv_arch.sh)
 CC   = $(ARCH)-gcc
 AS   = $(ARCH)-as
 LD   = $(ARCH)-ld
-OBJS = firmware_menu_common.o firmware_buttons.o sdcard.o div.o std.o config.o oled.o display.o printf.o mul.o crt0.o fat_io_lib.o 
+OBJS = firmware_album_menu.o firmware_menu_common.o firmware_buttons.o sdcard.o div.o std.o config.o oled.o display.o printf.o mul.o crt0.o fat_io_lib.o 
 
 
 $(PRGS): %: %.o $(OBJS)

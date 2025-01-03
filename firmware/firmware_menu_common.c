@@ -5,15 +5,10 @@
 
 #include "firmware_buttons.h"
 
-extern void (*current_screen_function)();
-
 char items[MENU_LENGTH][MENU_ITEM_LENGTH];
 uint8 n_items;
 
-static short int selected_album = 0;
-
-
-void load_itens(uint8 album_mode)
+void load_items(uint8 album_mode)
 {
   const char *path = "/";
   FL_DIR dirstat;
@@ -48,43 +43,22 @@ void load_itens(uint8 album_mode)
   }
 }
 
-void album_menu_buttons()
+void show_menu(uint8 index)
 {
-  if (BUTTON_PRESSED(BUTTON_DOWN))
+  display_set_cursor(0, 0);
+  display_set_front_back_color(0, 255);
+  printf("    ===== albums =====    \n\n");
+  for (int i = 0; i < n_items; ++i)
   {
-    if (selected_album == n_items - 1)
-      selected_album = 0;
+    if (i == index)
+    {
+      display_set_front_back_color(0, 255);
+    }
     else
-      ++selected_album;
+    {
+      display_set_front_back_color(255, 0);
+    }
+    printf("%d - %s\n", i, items[i]);
   }
-  if (BUTTON_PRESSED(BUTTON_UP))
-  {
-    if (selected_album == 0)
-      selected_album = n_items - 1;
-    else
-      --selected_album;
-  }
-  if (BUTTON_PRESSED(BUTTON_LEFT))
-  {
-    if (selected_album == 0)
-      selected_album = n_items - 1;
-    else
-      --selected_album;
-  }
-  volume_buttons();
-}
-
-static void show_album_select()
-{
-  while (1)
-  {
-    // show_menu(selected_album);
-    album_menu_buttons();
-  }
-}
-
-void change_to_album_select()
-{
-  load_itens(1);
-  current_screen_function = &show_album_select;
+  display_refresh();
 }

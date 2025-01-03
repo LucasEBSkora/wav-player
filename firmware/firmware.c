@@ -8,7 +8,7 @@
 #include "fat_io_lib/src/fat_filelib.h"
 
 #include "firmware_buttons.h"
-#include "firmware_menu_common.h"
+#include "firmware_album_menu.h"
 
 short int selected_song = 0;
 
@@ -34,7 +34,6 @@ void init()
   while (fl_attach_media(sdcard_readsector, sdcard_writesector) != FAT_INIT_OK)
     ;
 }
-
 
 void main()
 {
