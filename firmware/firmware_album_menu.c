@@ -2,6 +2,8 @@
 
 #include "firmware_buttons.h"
 #include "firmware_menu_common.h"
+#include "firmware_song_menu.h"
+#include "firmware_song_player.h"
 
 extern void (*current_screen_function)();
 static short int selected_album = 0;
@@ -24,10 +26,11 @@ void album_menu_buttons()
     }
     if (BUTTON_PRESSED(BUTTON_LEFT))
     {
-        if (selected_album == 0)
-            selected_album = n_items - 1;
-        else
-            --selected_album;
+        change_to_song_player_album(selected_album);
+    }
+    if (BUTTON_PRESSED(BUTTON_RIGHT))
+    {
+        change_to_song_select(selected_album);
     }
     volume_buttons();
 }
