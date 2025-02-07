@@ -77,3 +77,11 @@ void show_menu(uint8 index, const char* title)
   }
   display_refresh();
 }
+
+static char song_path[2*MENU_ITEM_LENGTH + 1];
+
+const char* get_song_path(int selected) {
+  strcpy(song_path, path);
+  strcat(song_path, items[selected]);
+  return song_path;
+}
