@@ -14,6 +14,6 @@ extern char items[MENU_LENGTH][MENU_ITEM_LENGTH];
 extern uint8 n_items;
 
 void load_items(uint8 album_mode, uint8 selected);
-void show_menu(uint8 index);
+void show_menu(uint8 index, const char* title);
 
 #endif

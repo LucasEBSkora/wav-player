@@ -4,6 +4,7 @@
 
 #include "config.h"
 #include "oled.h"
+#include "display.h"
 
 void oled_init_mode(int mode)
 {
@@ -74,10 +75,8 @@ void oled_fullscreen()
 
 void oled_clear(unsigned char c)
 {
-  for (int v=0;v<128;v++) {
-    for (int u=0;u<128;u++) {
-      oled_pix(c,c,c);
-      oled_wait();
-    }
+  volatile unsigned char* buf = display_framebuffer();
+  for (int i=0;i<128*128;i++) {
+    buf[i] = c;
   }
 }

@@ -40,13 +40,16 @@ void song_menu_buttons()
 
 static void show_song_select()
 {
-    show_menu(selected_song);
+    show_menu(selected_song, "songs");
     song_menu_buttons();
 }
 
 void change_to_song_select(int selected_album)
 {
     load_items(0, selected_album);
+    if (selected_song > n_items) {
+        selected_song = 0;
+    }
     oled_clear(0);
     current_screen_function = &show_song_select;
 }

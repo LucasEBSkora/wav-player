@@ -39,7 +39,7 @@ void album_menu_buttons()
 
 static void show_album_select()
 {
-    show_menu(selected_album);
+    show_menu(selected_album, "albums");
     album_menu_buttons();
 }
 

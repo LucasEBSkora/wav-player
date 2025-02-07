@@ -58,11 +58,11 @@ void load_items(uint8 album_mode, uint8 selected)
   }
 }
 
-void show_menu(uint8 index)
+void show_menu(uint8 index, const char* title)
 {
   display_set_cursor(0, 0);
   display_set_front_back_color(0, 255);
-  printf("    ===== albums =====    \n\n");
+  printf("    ===== %s =====    \n\n", title);
   for (int i = 0; i < n_items; ++i)
   {
     if (i == index)
