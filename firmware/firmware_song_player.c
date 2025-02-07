@@ -6,9 +6,10 @@
 #include "oled.h"
 #include "firmware_song_menu.h"
 #include "firmware_buttons.h"
-extern void (*current_screen_function)();
 
-extern int pwm_audio_high;
+extern void (*current_screen_function)();
+extern void (*audio_function)();
+
 
 FL_FILE *f;
 static const char *song_path;
@@ -30,25 +31,17 @@ static void show_screen()
 static void stop_player()
 {
   fl_fclose(f);
-  clear_audio();
   return_to_song_select();
 }
 
 static void play_song()
 {
   int *addr = (int *)(*AUDIO);
-  if (paused)
+  int sz = fl_fread(addr, 1, 512, f);
+  if (sz < 512)
   {
-    memset(addr,0,512);
-  }
-  else
-  {
-    int sz = fl_fread(addr, 1, 512, f);
-    if (sz < 512)
-    {
-      stop_player();
-      return;
-    }
+    stop_player();
+    return;
   }
   // wait for buffer swap
   while (addr == (int *)(*AUDIO))
@@ -60,6 +53,14 @@ static void player_buttons()
   if (button_pressed(BUTTON_DOWN))
   {
     paused = !paused;
+    if (paused)
+    {
+      audio_function = &clear_audio;
+    }
+    else
+    {
+      audio_function = &play_song;
+    }
   }
   if (button_pressed(BUTTON_UP))
   {
@@ -91,8 +92,8 @@ void change_to_song_player(int selected_song)
 {
   load_song(selected_song);
   oled_clear(0);
-  *PWM_MAX = pwm_audio_high;
   current_screen_function = &show_song_player;
+  audio_function = &play_song;
 }
 
 void change_to_song_player_album(int selected_album)
@@ -101,17 +102,8 @@ void change_to_song_player_album(int selected_album)
 
 void clear_audio()
 {
-  // wait for a buffer swap (sync)
-  int *addr = (int*)(*AUDIO);
-  while (addr == (int*)(*AUDIO));
-  // go ahead
-  for (int b=0 ; b<2 ; ++b) {
-    // read directly in hardware buffer
-    addr = (int*)(*AUDIO);
-    // clear buffer
-    memset(addr,0,512);
-    // wait for buffer swap
-    while (addr == (int*)(*AUDIO));
-  }
-  *PWM_MAX = 0;
+  int *addr = (int *)(*AUDIO);
+  memset(addr, 0, 512);
+  while (addr == (int *)(*AUDIO))
+    ;
 }

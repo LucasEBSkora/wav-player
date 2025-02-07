@@ -4,7 +4,6 @@
 
 #pragma once
 
-extern volatile int* const LEDS;
 extern volatile int* const OLED;
 extern volatile int* const OLED_RST;
 extern volatile int* const UART;

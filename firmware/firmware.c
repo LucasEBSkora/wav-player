@@ -16,12 +16,10 @@ short int selected_song = 0;
 int pwm_audio_high = 8;
 
 void (*current_screen_function)() = NULL;
+void (*audio_function)() = NULL;
 
 void init()
 {
-  clear_audio();
-  // turn LEDs off
-  *LEDS = 0;
   // install putchar handler for printf
   f_putchar = display_putchar;
   // init screen
@@ -35,6 +33,7 @@ void init()
   // attach media access functions to library
   while (fl_attach_media(sdcard_readsector, sdcard_writesector) != FAT_INIT_OK)
     ;
+  *PWM_MAX = pwm_audio_high;
 }
 
 void main()
@@ -45,6 +44,7 @@ void main()
   while (1)
   {
     update_buttons();
+    (*audio_function)();
     (*current_screen_function)();
   }
 }

@@ -182,7 +182,6 @@ $$end
     uint1 peripheral_r =  peripheral & (prev_mem_rw == 4b0); // reading periph.
     uint1 peripheral_w =  peripheral & (prev_mem_rw != 4b0); // writing periph.
     uint1 audio_access =  prev_mem_addr[$periph_bit-1$,1];
-    uint1 leds_access            = prev_mem_addr[ 0,1];
     uint1 display_direct_access  = prev_mem_addr[ 1,1];
     uint1 display_reset_access   = prev_mem_addr[ 2,1];
     uint1 sd_access              = prev_mem_addr[ 5,1];
@@ -207,8 +206,17 @@ $$end
     // writes CPU => peripherals
     if (peripheral_w & ~audio_access & ~framebuffer_access) {
       /// LEDs
-      leds           = leds_access ? prev_wdata[0,8] : leds;
       audio.high     = pwm_max_access ? prev_wdata[0,4] : audio.high;
+        leds = pwm_max_access ? {
+          prev_wdata[0,4] > 14,
+          prev_wdata[0,4] > 12,
+          prev_wdata[0,4] > 10,
+          prev_wdata[0,4] > 8,
+          prev_wdata[0,4] > 6,
+          prev_wdata[0,4] > 4,
+          prev_wdata[0,4] > 2,
+          prev_wdata[0,4] > 0
+        } : leds;
       /// display
       if (display_direct_access) {
         // -> whether to send command or data

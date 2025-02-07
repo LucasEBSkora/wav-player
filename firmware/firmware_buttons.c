@@ -1,16 +1,14 @@
 #include "firmware_buttons.h"
 extern int pwm_audio_high;
 
-void volume_buttons(int update)
+void volume_buttons()
 {
-    int changed = 0;
     if (button_pressed(BUTTON_MINUS))
     {
         if (pwm_audio_high > 0)
             --pwm_audio_high;
         else
             pwm_audio_high = 0;
-        changed = 1;
     }
     if (button_pressed(BUTTON_PLUS))
     {
@@ -18,22 +16,8 @@ void volume_buttons(int update)
             ++pwm_audio_high;
         else
             pwm_audio_high = 15;
-        changed = 1;
     }
-    if (update && changed)
-    {
-        *PWM_MAX = pwm_audio_high;
-    }
-
-    int leds = 0;
-    for (int i = 0; i <= 7; ++i)
-    {
-        if (pwm_audio_high >= 2 * i + 1)
-        {
-            leds |= (1 << (7 - i));
-        }
-    }
-    *LEDS = leds;
+    *PWM_MAX = pwm_audio_high;
 }
 
 static int last_buttons = 0;

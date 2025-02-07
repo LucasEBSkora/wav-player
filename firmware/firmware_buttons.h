@@ -10,7 +10,7 @@
 #define BUTTON_LEFT (1 << 5)
 #define BUTTON_RIGHT (1 << 6)
 
-void volume_buttons(int update);
+void volume_buttons();
 void update_buttons();
 int button_pressed(int button_code);
 

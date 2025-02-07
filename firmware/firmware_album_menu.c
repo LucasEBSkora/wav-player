@@ -8,6 +8,7 @@
 #include "oled.h"
 
 extern void (*current_screen_function)();
+extern void (*audio_function)();
 static short int selected_album = 0;
 
 void album_menu_buttons()
@@ -34,7 +35,7 @@ void album_menu_buttons()
     {
         change_to_song_select(selected_album);
     }
-    volume_buttons(0);
+    volume_buttons();
 }
 
 static void show_album_select()
@@ -48,4 +49,5 @@ void change_to_album_select()
     load_items(1, selected_album);
     oled_clear(0);
     current_screen_function = &show_album_select;
+    audio_function = &clear_audio;
 }
