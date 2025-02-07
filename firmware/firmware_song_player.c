@@ -24,8 +24,6 @@ static void show_screen()
 
 static void play_song()
 {
-    int leds = 1;
-    int dir  = 0;
     // plays the entire file
     while (1) {
       // read directly in hardware buffer
@@ -35,14 +33,7 @@ static void play_song()
       if (sz < 512) break; // reached end of file
       // wait for buffer swap
       while (addr == (int*)(*AUDIO)) { }
-      // light show!
-      if (leds == 128 || leds == 1) { dir = 1-dir; }
-      if (dir) {
-        leds = leds << 1;
-      } else {
-        leds = leds >> 1;
-      }
-      *LEDS = leds;
+      update_buttons();
       volume_buttons();
     }
     // close

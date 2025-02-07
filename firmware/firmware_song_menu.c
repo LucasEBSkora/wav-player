@@ -13,25 +13,25 @@ void change_to_album_select();
 
 void song_menu_buttons()
 {
-    if (BUTTON_PRESSED(BUTTON_DOWN))
+    if (button_pressed(BUTTON_DOWN))
     {
         if (selected_song == n_items - 1)
             selected_song = 0;
         else
             ++selected_song;
     }
-    if (BUTTON_PRESSED(BUTTON_UP))
+    if (button_pressed(BUTTON_UP))
     {
         if (selected_song == 0)
             selected_song = n_items - 1;
         else
             --selected_song;
     }
-    if (BUTTON_PRESSED(BUTTON_LEFT))
+    if (button_pressed(BUTTON_LEFT))
     {
         change_to_album_select();
     }
-    if (BUTTON_PRESSED(BUTTON_RIGHT))
+    if (button_pressed(BUTTON_RIGHT))
     {
         change_to_song_player(selected_song);
     }

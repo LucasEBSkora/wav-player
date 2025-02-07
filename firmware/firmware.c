@@ -59,6 +59,7 @@ void main()
   change_to_album_select();
   while (1)
   {
+    update_buttons();
     (*current_screen_function)();
   }
 }
