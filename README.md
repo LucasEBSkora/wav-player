@@ -14,3 +14,6 @@ or run
     git submodule update --init --recursive
 
 after cloning
+
+## How to use
+Songs must be grouped in albums with file names ending in ".raw". To enter an album, use the right button, and to play a song, use the right button. To pick the song/album, use the up and down buttons, and to exit an album, use the left button. You can also use B1 to decrease the volume and B2 to increase it.

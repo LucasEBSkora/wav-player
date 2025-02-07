@@ -82,6 +82,8 @@ static char song_path[2*MENU_ITEM_LENGTH + 1];
 
 const char* get_song_path(int selected) {
   strcpy(song_path, path);
+  strcat(song_path, "/");
   strcat(song_path, items[selected]);
+  strcat(song_path, ".raw");
   return song_path;
 }

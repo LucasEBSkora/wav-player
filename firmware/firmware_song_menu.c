@@ -53,3 +53,8 @@ void change_to_song_select(int selected_album)
     oled_clear(0);
     current_screen_function = &show_song_select;
 }
+
+void return_to_song_select() {
+    oled_clear(0);
+    current_screen_function = &show_song_select;
+}

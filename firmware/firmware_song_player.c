@@ -4,7 +4,8 @@
 #include "firmware_menu_common.h"
 #include "display.h"
 #include "oled.h"
-
+#include "firmware_song_menu.h"
+#include "firmware_buttons.h"
 extern void (*current_screen_function)();
 
 FL_FILE *f;
@@ -15,17 +16,42 @@ static void show_screen()
     display_set_cursor(0, 128);
     display_set_front_back_color(0, 255);
     printf(song_path);
+    if (f != NULL) {
+        printf("\nplaying...\n");
+    }
     display_refresh();
 }
 
 static void play_song()
 {
-
+    int leds = 1;
+    int dir  = 0;
+    // plays the entire file
+    while (1) {
+      // read directly in hardware buffer
+      int *addr = (int*)(*AUDIO);
+      // (use 512 bytes reads to avoid extra copies inside fat_io_lib)
+      int sz = fl_fread(addr,1,512,f);
+      if (sz < 512) break; // reached end of file
+      // wait for buffer swap
+      while (addr == (int*)(*AUDIO)) { }
+      // light show!
+      if (leds == 128 || leds == 1) { dir = 1-dir; }
+      if (dir) {
+        leds = leds << 1;
+      } else {
+        leds = leds >> 1;
+      }
+      *LEDS = leds;
+      volume_buttons();
+    }
+    // close
+    fl_fclose(f);
+    return_to_song_select();
 }
 
 static void show_song_player()
 {
-    show_screen();
     play_song();
 }
 
@@ -39,7 +65,8 @@ void change_to_song_player(int selected_song)
 {
     load_song(selected_song);
     oled_clear(0);
-    current_screen_function = &show_song_player;
+    show_screen();
+    play_song();
 }
 
 void change_to_song_player_album(int selected_album)
