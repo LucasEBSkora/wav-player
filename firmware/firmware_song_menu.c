@@ -4,6 +4,8 @@
 #include "firmware_menu_common.h"
 #include "firmware_song_player.h"
 
+#include "oled.h"
+
 extern void (*current_screen_function)();
 static short int selected_song = 0;
 
@@ -38,15 +40,13 @@ void song_menu_buttons()
 
 static void show_song_select()
 {
-    while (1)
-    {
-        show_menu(selected_song);
-        song_menu_buttons();
-    }
+    show_menu(selected_song);
+    song_menu_buttons();
 }
 
 void change_to_song_select(int selected_album)
 {
-    load_items(0);
+    load_items(0, selected_album);
+    oled_clear(0);
     current_screen_function = &show_song_select;
 }

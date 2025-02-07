@@ -5,3 +5,4 @@ compile
 *.o
 build
 firmware/code.s
+songs/*
