@@ -9,6 +9,7 @@ void volume_buttons()
             --pwm_audio_high;
         else
             pwm_audio_high = 0;
+        *PWM_MAX = pwm_audio_high;
     }
     if (button_pressed(BUTTON_PLUS))
     {
@@ -16,8 +17,9 @@ void volume_buttons()
             ++pwm_audio_high;
         else
             pwm_audio_high = 15;
+        *PWM_MAX = pwm_audio_high;
     }
-    *PWM_MAX = pwm_audio_high;
+    
     int leds = 0;
     for (int i = 0; i <= 7; ++i)
     {

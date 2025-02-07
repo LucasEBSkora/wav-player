@@ -36,6 +36,7 @@ void song_menu_buttons()
         change_to_song_player(selected_song);
     }
     volume_buttons();
+    *PWM_MAX = 0;
 }
 
 static void show_song_select()

@@ -35,6 +35,7 @@ void album_menu_buttons()
         change_to_song_select(selected_album);
     }
     volume_buttons();
+    *PWM_MAX = 0;
 }
 
 static void show_album_select()

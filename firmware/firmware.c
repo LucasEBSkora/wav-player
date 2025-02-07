@@ -30,6 +30,7 @@ void clear_audio()
     // wait for buffer swap
     while (addr == (int*)(*AUDIO));
   }
+  *PWM_MAX = 0;
 }
 
 void init()

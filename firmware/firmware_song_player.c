@@ -8,6 +8,8 @@
 #include "firmware_buttons.h"
 extern void (*current_screen_function)();
 
+extern int pwm_audio_high;
+
 FL_FILE *f;
 static const char* song_path;
 
@@ -57,6 +59,7 @@ void change_to_song_player(int selected_song)
     load_song(selected_song);
     oled_clear(0);
     show_screen();
+    *PWM_MAX = pwm_audio_high;
     play_song();
 }
 
