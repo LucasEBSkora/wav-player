@@ -9,29 +9,13 @@
 
 #include "firmware_buttons.h"
 #include "firmware_album_menu.h"
+#include "firmware_song_player.h"
 
 short int selected_song = 0;
 
 int pwm_audio_high = 8;
 
 void (*current_screen_function)() = NULL;
-
-void clear_audio()
-{
-  // wait for a buffer swap (sync)
-  int *addr = (int*)(*AUDIO);
-  while (addr == (int*)(*AUDIO));
-  // go ahead
-  for (int b=0 ; b<2 ; ++b) {
-    // read directly in hardware buffer
-    addr = (int*)(*AUDIO);
-    // clear buffer
-    memset(addr,0,512);
-    // wait for buffer swap
-    while (addr == (int*)(*AUDIO));
-  }
-  *PWM_MAX = 0;
-}
 
 void init()
 {

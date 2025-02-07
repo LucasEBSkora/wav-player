@@ -1,5 +1,5 @@
 #include "firmware_song_player.h"
-
+#include "std.h"
 #include "fat_io_lib/src/fat_filelib.h"
 #include "firmware_menu_common.h"
 #include "display.h"
@@ -13,6 +13,8 @@ extern int pwm_audio_high;
 FL_FILE *f;
 static const char *song_path;
 
+int paused = 0;
+
 static void show_screen()
 {
   display_set_cursor(0, 128);
@@ -25,23 +27,50 @@ static void show_screen()
   display_refresh();
 }
 
+static void stop_player()
+{
+  fl_fclose(f);
+  clear_audio();
+  return_to_song_select();
+}
+
 static void play_song()
 {
-
-  // plays the entire file
-  // read directly in hardware buffer
   int *addr = (int *)(*AUDIO);
-  // (use 512 bytes reads to avoid extra copies inside fat_io_lib)
-  int sz = fl_fread(addr, 1, 512, f);
-  if (sz < 512)
+  if (paused)
   {
-    fl_fclose(f);
-    return_to_song_select();
+    memset(addr,0,512);
+  }
+  else
+  {
+    int sz = fl_fread(addr, 1, 512, f);
+    if (sz < 512)
+    {
+      stop_player();
+      return;
+    }
   }
   // wait for buffer swap
   while (addr == (int *)(*AUDIO))
     ;
+}
 
+static void player_buttons()
+{
+  if (button_pressed(BUTTON_DOWN))
+  {
+    paused = !paused;
+  }
+  if (button_pressed(BUTTON_UP))
+  {
+  }
+  if (button_pressed(BUTTON_LEFT))
+  {
+    stop_player();
+  }
+  if (button_pressed(BUTTON_RIGHT))
+  {
+  }
   volume_buttons(1);
 }
 
@@ -49,6 +78,7 @@ static void show_song_player()
 {
   show_screen();
   play_song();
+  player_buttons();
 }
 
 static void load_song(int selected_song)
@@ -67,4 +97,21 @@ void change_to_song_player(int selected_song)
 
 void change_to_song_player_album(int selected_album)
 {
+}
+
+void clear_audio()
+{
+  // wait for a buffer swap (sync)
+  int *addr = (int*)(*AUDIO);
+  while (addr == (int*)(*AUDIO));
+  // go ahead
+  for (int b=0 ; b<2 ; ++b) {
+    // read directly in hardware buffer
+    addr = (int*)(*AUDIO);
+    // clear buffer
+    memset(addr,0,512);
+    // wait for buffer swap
+    while (addr == (int*)(*AUDIO));
+  }
+  *PWM_MAX = 0;
 }
